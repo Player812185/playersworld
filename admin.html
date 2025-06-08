@@ -9,31 +9,72 @@
 <body>
   <section class="admin-panel">
     <h2>Панель администратора</h2>
-    <label for="streamSelect">Выберите ссылку на аудио-поток:</label>
+    <label for="streamSelect">Выберите аудио-поток:</label>
     <select id="streamSelect">
-      <option value="https://www.myinstants.com/media/sounds/leck-meine-fetten-eier-du_vryOfG3.mp3">Поток 1</option>
-      <option value="https://www.myinstants.com/media/sounds/du-bisch-erbarmlich-2.mp3">Поток 2</option>
-      <option value="https://www.myinstants.com/media/sounds/alllah-habaaaaaaaaar.mp3">Поток 3</option>
+      <option value="https://www.myinstants.com/media/sounds/alllah-habaaaaaaaaar.mp3">Поток 1</option>
+      <option value="https://www.myinstants.com/media/sounds/leck-meine-fetten-eier-du_vryOfG3.mp3">Поток 2</option>
+      <option value="https://www.myinstants.com/media/sounds/du-bisch-erbarmlich-2.mp3">Поток 3</option>
     </select>
-    <button id="saveBtn">Сохранить</button>
+    <button id="saveBtn">Запустить трансляцию</button>
     <p id="message"></p>
   </section>
-
   <script>
-    const select = document.getElementById('streamSelect');
-    const saveBtn = document.getElementById('saveBtn');
-    const message = document.getElementById('message');
+    /**
+     * Для работы потребуется GitHub Personal Access Token с правом repo
+     * Задайте его в админке (не для общего доступа!)
+     */
+    const GITHUB_TOKEN = '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';
+    const OWNER = 'Player812185';
+    const REPO = 'playersworld';
+    const PATH = 'config.json';
 
-    // Подгружаем текущее значение
-    const current = localStorage.getItem('streamUrl');
-    if (current) {
-      select.value = current;
+    const select = document.getElementById('streamSelect');
+    const btn = document.getElementById('saveBtn');
+    const msg = document.getElementById('message');
+    let sha = '';
+
+    async function getConfigSha() {
+      const res = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
+        { headers: { Authorization: `token ${GITHUB_TOKEN}` } }
+      );
+      const data = await res.json();
+      sha = data.sha;
     }
 
-    saveBtn.addEventListener('click', () => {
-      localStorage.setItem('streamUrl', select.value);
-      message.textContent = 'Ссылка сохранена!';
-      setTimeout(() => message.textContent = '', 3000);
+    async function updateConfig(newUrl) {
+      const content = btoa(JSON.stringify({ streamUrl: newUrl }, null, 2));
+      const body = {
+        message: 'Обновлён streamUrl',
+        content,
+        sha
+      };
+      const res = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${GITHUB_TOKEN}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        }
+      );
+      const data = await res.json();
+      sha = data.content.sha;
+    }
+
+    btn.addEventListener('click', async () => {
+      const url = select.value;
+      try {
+        await getConfigSha();
+        await updateConfig(url);
+        msg.textContent = 'Трансляция обновлена!';
+        setTimeout(() => (msg.textContent = ''), 3000);
+      } catch (e) {
+        console.error(e);
+        msg.textContent = 'Ошибка при обновлении';
+      }
     });
   </script>
 </body>
