@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>плауерский проигрыватель говна</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Рекламный баннер -->
+  <div class="banner">
+    <img src="https://via.placeholder.com/1200x300?text=Ваш+рекламный+баннер" alt="banнер">
+  </div>
+
+  <!-- Аудиоплеер -->
+  <main class="content">
+    <h1>Добро пожаловать на наш музыкальный сайт</h1>
+    <audio id="audioPlayer" controls autoplay>
+      Ваш браузер не поддерживает аудио.
+    </audio>
+  </main>
+
+  <script>
+    // Получаем URL потока из localStorage или ставим дефолт
+    const defaultStream = 'https://www.myinstants.com/media/sounds/du-bisch-erbarmlich-2.mp3';
+    const streamUrl = localStorage.getItem('streamUrl') || defaultStream;
+    const player = document.getElementById('audioPlayer');
+    player.src = streamUrl;
+  </script>
+</body>
+</html>
