@@ -3,29 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>плауерский проигрыватель говна</title>
+  <title>Музыкальный стрим</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Рекламный баннер -->
   <div class="banner">
-    <img src="https://via.placeholder.com/1200x300?text=Ваш+рекламный+баннер" alt="banнер">
+    <img src="https://via.placeholder.com/1200x300?text=Ваш+рекламный+баннер" alt="Рекламный баннер">
   </div>
-
-  <!-- Аудиоплеер -->
   <main class="content">
-    <h1>Добро пожаловать на наш музыкальный сайт</h1>
-    <audio id="audioPlayer" controls autoplay>
-      Ваш браузер не поддерживает аудио.
-    </audio>
+    <h1>Музыкальный стрим</h1>
+    <audio id="audioPlayer" controls autoplay></audio>
   </main>
-
   <script>
-    // Получаем URL потока из localStorage или ставим дефолт
-    const defaultStream = 'https://www.myinstants.com/media/sounds/du-bisch-erbarmlich-2.mp3';
-    const streamUrl = localStorage.getItem('streamUrl') || defaultStream;
     const player = document.getElementById('audioPlayer');
-    player.src = streamUrl;
+    let currentUrl = '';
+
+    async function fetchStream() {
+      try {
+        const res = await fetch('config.json?cachebust=' + Date.now());
+        const cfg = await res.json();
+        if (cfg.streamUrl !== currentUrl) {
+          const wasPlaying = !player.paused;
+          currentUrl = cfg.streamUrl;
+          player.src = currentUrl;
+          if (wasPlaying) player.play().catch(()=>{});
+        }
+      } catch (e) {
+        console.error('Ошибка загрузки конфига', e);
+      }
+    }
+
+    // Первичная загрузка и последующий опрос каждые 5 секунд
+    fetchStream();
+    setInterval(fetchStream, 5000);
   </script>
 </body>
 </html>
