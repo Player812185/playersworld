@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель администратора</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section class="admin-panel">
+    <h2>Панель администратора</h2>
+    <label for="streamSelect">Выберите ссылку на аудио-поток:</label>
+    <select id="streamSelect">
+      <option value="https://www.myinstants.com/media/sounds/leck-meine-fetten-eier-du_vryOfG3.mp3">Поток 1</option>
+      <option value="https://www.myinstants.com/media/sounds/du-bisch-erbarmlich-2.mp3">Поток 2</option>
+      <option value="https://www.myinstants.com/media/sounds/alllah-habaaaaaaaaar.mp3">Поток 3</option>
+    </select>
+    <button id="saveBtn">Сохранить</button>
+    <p id="message"></p>
+  </section>
+
+  <script>
+    const select = document.getElementById('streamSelect');
+    const saveBtn = document.getElementById('saveBtn');
+    const message = document.getElementById('message');
+
+    // Подгружаем текущее значение
+    const current = localStorage.getItem('streamUrl');
+    if (current) {
+      select.value = current;
+    }
+
+    saveBtn.addEventListener('click', () => {
+      localStorage.setItem('streamUrl', select.value);
+      message.textContent = 'Ссылка сохранена!';
+      setTimeout(() => message.textContent = '', 3000);
+    });
+  </script>
+</body>
+</html>
