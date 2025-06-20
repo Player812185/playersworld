@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оспаривание наказания</title>
+    <!-- Загрузка Tailwind CSS для стилизации -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Оспаривание наказания</h1>
+        
+        <form id="appealForm" class="space-y-5">
+            <!-- Поле для ника нарушителя -->
+            <div>
+                <label for="violatorNickname" class="block text-gray-700 text-sm font-semibold mb-2">Ник нарушителя:</label>
+                <input 
+                    type="text" 
+                    id="violatorNickname" 
+                    name="violatorNickname" 
+                    required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Введите ник"
+                >
+            </div>
+            
+            <!-- Поле для ID наказания -->
+            <div>
+                <label for="punishmentId" class="block text-gray-700 text-sm font-semibold mb-2">ID наказания:</label>
+                <input 
+                    type="text" 
+                    id="punishmentId" 
+                    name="punishmentId" 
+                    required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Введите ID наказания"
+                >
+            </div>
+            
+            <!-- Поле для оправдания -->
+            <div>
+                <label for="justification" class="block text-gray-700 text-sm font-semibold mb-2">Оправдание:</label>
+                <textarea 
+                    id="justification" 
+                    name="justification" 
+                    rows="6" 
+                    required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+                    placeholder="Подробно опишите ваше оправдание"
+                ></textarea>
+            </div>
+            
+            <!-- Кнопка отправки формы -->
+            <button 
+                type="submit" 
+                class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+                Отправить оспаривание
+            </button>
+        </form>
+
+        <!-- Область для вывода сообщений (успех/ошибка) -->
+        <p id="message" class="hidden mt-6 p-3 text-center rounded-lg text-sm"></p>
+    </div>
+
+    <!-- Подключение файла JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
