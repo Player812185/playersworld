@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const params = new URLSearchParams();
         // Замените 'entry.XXXXXXXXX' на фактические ID полей вашей Google Form
         // Для поля "Ник нарушителя"
-        params.append('entry.123456789', formData.get('violatorNickname')); 
+        params.append('entry.840550611', formData.get('violatorNickname')); 
         // Для поля "ID наказания"
         params.append('entry.220217179', formData.get('punishmentId'));    
         // Для поля "Оправдание"
-        params.append('entry.840550611', formData.get('justification'));  
+        params.append('entry.238330568', formData.get('justification'));  
 
         try {
             // Отправляем данные формы с помощью Fetch API
